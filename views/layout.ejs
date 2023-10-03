@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title%>
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/layouts.css">
+
+        
+      
+
+
+    
+    <%- style %>
+</head>
+
+<body>
+    <%- include('_header'); %>
+
+        <!-- <% if(flash.success && flash.success.length> 0) {%>
+            <h5>
+                <%= flash.success %>
+            </h5>
+            <%}%> -->
+
+        <main id="layout-main">
+            <%- body %>
+        </main>
+
+
+        <%- include('_footer'); %>
+
+            <% - script%>
+
+                <script>
+                        <% if (flash.success && flash.success.length > 0) {%>
+                        new Noty({
+                            theme: 'relax',
+                            text: '<%=flash.success%>',
+                            type: 'success',
+                            layout: 'topRight',
+                            timeout: 1500
+                        }).show();
+
+                        <%}%>
+
+                    <% if (flash.error && flash.error.length > 0) {%>
+                        new Noty({
+                            theme: 'relax',
+                            text: '<%=flash.error%>',
+                            type: 'error',                 // color type name error form noty js site
+                            layout: 'topRight',
+                            timeout: 1500
+                        }).show();
+                        <%}%>
+                </script>
+
+                <!-- importing this script for creating the comments -->
+                <script src="/js/home_post_comments.js"></script>
+                <script src="/js/home_posts.js"></script>
+
+                <!-- CHANGE :: import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
+                <script src="js/toggle_likes.js"></script>
+                <script>
+                        $('.toggle-like-button').each(function () {
+                            let self = this;
+                            let toggleLike = new ToggleLike(self);
+                        });
+                </script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+                <script src="/js/chat_engine.js"></script>
+                <% if(locals.user) {%>
+                    <script>
+                        new ChatEngine("user-chat-box", "<%= locals.user.email %>");
+                        // new ChatEngine("user-chat-box", "<%= locals.user._id %>");
+
+                    </script>
+                    <% } %>
+
+
+</body>
+
+</html>
